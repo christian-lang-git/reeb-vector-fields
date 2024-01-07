@@ -1102,6 +1102,13 @@ const { re } = require("mathjs");
             console.log("onClickExportVTK");
             ftle_manager.exportVTK();
         });
+        document.getElementById("button_export_streamlines").addEventListener("click", (event) => {
+            if(block_all_input){
+                return;
+            }
+            console.log("onClickExportStreamlines");
+            streamline_context_static.exportVTK();
+        });
     }
 
     function addOnClickUpdateRenderSettings() {

@@ -2,6 +2,9 @@ const RawData = require("./raw_data");
 const StreamlineGenerator = require("./streamline_generator");
 const SegmentDuplicator = require("./segment_duplicator");
 const LODData = require("./lod_data");
+const VTK_File_Streamlines = require("./vtk_file_streamlines");
+const JSZip = require("jszip");
+const FileSaver = require("file-saver");
 
 class StreamlineContext {
 
@@ -237,6 +240,23 @@ class StreamlineContext {
     LogMetaData()
     {
         this.lod_list[0].LogMetaData();
+    }
+
+    exportVTK(){
+        var that = this;
+        var zip = new JSZip();
+
+        var vtk_file = new VTK_File_Streamlines();
+        vtk_file.SetData(this.lod_list[0], PART_INDEX_DEFAULT);        
+        zip.file("exported_streamlines.vtk", vtk_file.GetFileContent());
+        
+        var file_name_zip = "exported_streamlines";
+
+        zip.generateAsync({ type: "blob" })
+            .then(function (content) {
+                FileSaver.saveAs(content, file_name_zip);
+                that.finished_vtk_export = true;
+            });
     }
 
 }
