@@ -247,7 +247,7 @@ class StreamlineContext {
         var zip = new JSZip();
 
         var vtk_file = new VTK_File_Streamlines();
-        vtk_file.SetData(this.lod_list[0], PART_INDEX_DEFAULT);        
+        vtk_file.SetData(this.ui_seeds, this.lod_list[0], PART_INDEX_DEFAULT);        
         zip.file("exported_streamlines.vtk", vtk_file.GetFileContent());
         
         var file_name_zip = "exported_streamlines";

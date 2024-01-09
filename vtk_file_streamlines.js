@@ -5,7 +5,8 @@ class VTK_File_Streamlines {
         this.endline = "\n";
     }
 
-    SetData(lod_data, part_index) {
+    SetData(p_ui_seeds, lod_data, part_index) {
+        this.p_ui_seeds = p_ui_seeds;
         this.lod_data = lod_data;
         this.p_streamline_context = this.lod_data.p_streamline_context;
         this.raw_data = this.p_streamline_context.GetRawData(part_index);
@@ -28,6 +29,12 @@ class VTK_File_Streamlines {
         //var num_points = this.pointDataVector.length;
         var num_points = this.count_num_points_in_all_lines;
 
+        this.GeneratePointToColorMapping();
+        //var colors_string = this.GenerateColorsString();
+
+        var scalars_string = this.GenerateScalarsString();
+        var lookup_table_string = this.GenerateLookupTableString();
+
         this.content_string = 
         "# vtk DataFile Version 1.0" + this.endline +
         "Exported streamlines" + this.endline +
@@ -36,7 +43,18 @@ class VTK_File_Streamlines {
         "POINTS " + num_points + " float" + this.endline +
         points_string + this.endline +
         "LINES " + num_lines + " " + num_data_in_all_lines +
-        lines_string;
+        lines_string + this.endline +       
+        "POINT_DATA " + num_points + this.endline +  
+        //"COLOR_SCALARS colors 3" + this.endline +
+        //colors_string;
+        "SCALARS ids float" + this.endline +  
+        "LOOKUP_TABLE table" + this.endline +  
+        scalars_string + this.endline +  
+
+        "LOOKUP_TABLE table "+ this.vectorMultiPolyLines.length + this.endline +  
+        lookup_table_string;
+
+        
 
         console.log("this.pointDataVector", this.pointDataVector);
         console.log("num_points", this.pointDataVector.length);
@@ -71,6 +89,61 @@ class VTK_File_Streamlines {
                     s += " " + poly.pointIndices[k];
                 }
             }
+        }
+        return s;
+    }
+
+    GeneratePointToColorMapping(){
+        this.dict_point_to_color = {};
+        this.dict_point_to_multi_id = {};
+        var colors = this.p_ui_seeds.getStreamlineColors();
+
+        //generate a list that returns a vtk usable color string for every id
+        var list_id_to_color_strings = [];
+        for(var i=0; i<this.vectorMultiPolyLines.length; i++){
+            var color_string = colors[i].getStringBlankSeperator();
+            list_id_to_color_strings.push(color_string);
+        }
+
+        for(var i=0; i<this.vectorMultiPolyLines.length; i++){
+            var multi = this.vectorMultiPolyLines[i];
+            var multiPolyID = multi.multiPolyID;
+            for (var j = 0; j < multi.polyLines.length; j++) {
+                var poly = multi.polyLines[j];
+                for (var k = 0; k < poly.pointIndices.length; k++) {
+                    var pointIndex = poly.pointIndices[k];
+                    this.dict_point_to_color[pointIndex] = list_id_to_color_strings[multiPolyID];
+                    this.dict_point_to_multi_id[pointIndex] = multiPolyID;
+                }
+            }
+        }
+    }
+
+    /*
+    GenerateColorsString(){
+        var s = "";
+        for(var i=0; i<this.count_num_points_in_all_lines; i++){
+            s += this.dict_point_to_color[i] + this.endline;
+        }
+        return s;
+    }
+    */
+
+    GenerateScalarsString(){
+        var s = "";
+        for(var i=0; i<this.count_num_points_in_all_lines; i++){
+            s += this.dict_point_to_multi_id[i] / (this.vectorMultiPolyLines.length-1)  + this.endline;
+        }
+        return s;
+    }
+
+    GenerateLookupTableString(){
+        var colors = this.p_ui_seeds.getStreamlineColors();
+        var s = "";
+        //generate a list that returns a vtk usable color string for every id
+        for(var i=0; i<this.vectorMultiPolyLines.length; i++){
+            var color_string = colors[i].getStringBlankSeperator();
+            s += color_string + this.endline;
         }
         return s;
     }

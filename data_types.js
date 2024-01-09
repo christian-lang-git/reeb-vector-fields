@@ -233,6 +233,10 @@ class StreamlineColor {
         }
         arrayf[start_index_f + 3] = this.opacity;
     }
+
+    getStringBlankSeperator(){
+        return this.color[0] + " " + this.color[1] + " " + this.color[2] + " 1.0";
+    }
 }
 
 class StreamlineSeed {
