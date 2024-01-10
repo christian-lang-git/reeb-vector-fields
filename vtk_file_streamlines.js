@@ -3,6 +3,7 @@ class VTK_File_Streamlines {
     constructor() {
         this.decimals = 6;
         this.endline = "\n";
+        this.export_copies = true;
     }
 
     SetData(p_ui_seeds, lod_data, part_index) {
@@ -11,6 +12,7 @@ class VTK_File_Streamlines {
         this.p_streamline_context = this.lod_data.p_streamline_context;
         this.raw_data = this.p_streamline_context.GetRawData(part_index);
         this.pointDataVector = this.raw_data.data;
+        this.vectorLineSegment = this.lod_data.GetVectorLineSegment(part_index);
         this.lod_data_part = this.lod_data.list_part[part_index];
         this.vectorMultiPolyLines = this.lod_data_part.vectorMultiPolyLines;
         this.GenerateFileContent();
@@ -27,7 +29,7 @@ class VTK_File_Streamlines {
 
         var points_string = this.GeneratePointsString();
         //var num_points = this.pointDataVector.length;
-        var num_points = this.count_num_points_in_all_lines;
+        var num_points = this.export_copies ? this.pointDataVector.length : this.count_num_points_in_all_lines;
 
         this.GeneratePointToColorMapping();
         //var colors_string = this.GenerateColorsString();
@@ -64,7 +66,8 @@ class VTK_File_Streamlines {
         var decimals = this.decimals;
         var s = "";
         //for(var i=0; i<this.pointDataVector.length; i++){
-        for(var i=0; i<this.count_num_points_in_all_lines; i++){
+        var end = this.export_copies ? this.pointDataVector.length : this.count_num_points_in_all_lines;
+        for(var i=0; i<end; i++){
             var value = this.pointDataVector[i].position;
             //s += "[" + i + "] " + value[0].toFixed(decimals) + " " + value[1].toFixed(decimals) + " " + value[2].toFixed(decimals) + this.endline;
             s += value[0].toFixed(decimals) + " " + value[1].toFixed(decimals) + " " + value[2].toFixed(decimals) + this.endline;
@@ -87,6 +90,18 @@ class VTK_File_Streamlines {
                 for (var k = 0; k < poly.pointIndices.length; k++) {
                     this.count_num_points_in_all_lines += 1;
                     s += " " + poly.pointIndices[k];
+                }
+            }
+        }
+        //copies
+        if(this.export_copies){
+            for(var i=0; i<this.vectorLineSegment.length; i++){
+                var segment = this.vectorLineSegment[i];
+                var is_copy = segment.copy > 0;
+                if(is_copy){
+                    this.count_num_lines += 1;
+                    this.count_num_points_in_all_lines += 2;
+                    s += this.endline + "2 " + segment.indexA + " " + segment.indexB;
                 }
             }
         }
@@ -117,6 +132,19 @@ class VTK_File_Streamlines {
                 }
             }
         }
+
+        //copies
+        if(this.export_copies){
+            for(var i=0; i<this.vectorLineSegment.length; i++){
+                var segment = this.vectorLineSegment[i];
+                var multiPolyID = segment.multiPolyID;
+                var is_copy = segment.copy > 0;
+                if(is_copy){
+                    this.dict_point_to_multi_id[segment.indexA] = multiPolyID;
+                    this.dict_point_to_multi_id[segment.indexB] = multiPolyID;
+                }
+            }
+        }
     }
 
     /*
@@ -131,8 +159,10 @@ class VTK_File_Streamlines {
 
     GenerateScalarsString(){
         var s = "";
-        for(var i=0; i<this.count_num_points_in_all_lines; i++){
-            s += this.dict_point_to_multi_id[i] / (this.vectorMultiPolyLines.length-1)  + this.endline;
+        var end = this.export_copies ? this.pointDataVector.length : this.count_num_points_in_all_lines;
+        for(var i=0; i<end; i++){
+            var id = this.dict_point_to_multi_id[i] === undefined ? 0 : this.dict_point_to_multi_id[i];//fallback to 0 if key not in dict
+            s += id / (this.vectorMultiPolyLines.length-1)  + this.endline;
         }
         return s;
     }
