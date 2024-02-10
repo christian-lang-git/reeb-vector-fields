@@ -2032,43 +2032,66 @@ class StreamlineGenerator {
         //var y0 = y;
         //var z0 = z;
 
+        //MARKER_RULES_TMP done
+
         let scope = {
             x1: x1,
             x2: x2,
             x3: x3,
+            x1_new: x1,
+            x2_new: x2,
+            x3_new: x3,
         };
 
         if (x1 > 1) {
-            scope.x1 = math.evaluate(this.shader_rule_x_pos_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_x_pos_y, scope);
-            scope.x3 = math.evaluate(this.shader_rule_x_pos_z, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_x_pos_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_x_pos_y, scope);
+            scope.x3_new = math.evaluate(this.shader_rule_x_pos_z, scope);            
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
+            scope.x3 = scope.x3_new;
         }
         else if (x1 < 0) {
-            scope.x1 = math.evaluate(this.shader_rule_x_neg_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_x_neg_y, scope);
-            scope.x3 = math.evaluate(this.shader_rule_x_neg_z, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_x_neg_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_x_neg_y, scope);
+            scope.x3_new = math.evaluate(this.shader_rule_x_neg_z, scope);            
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
+            scope.x3 = scope.x3_new;
         }
 
         if (x2 > 1) {
-            scope.x1 = math.evaluate(this.shader_rule_y_pos_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_y_pos_y, scope);
-            scope.x3 = math.evaluate(this.shader_rule_y_pos_z, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_y_pos_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_y_pos_y, scope);
+            scope.x3_new = math.evaluate(this.shader_rule_y_pos_z, scope);            
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
+            scope.x3 = scope.x3_new;
         }
         else if (x2 < 0) {
-            scope.x1 = math.evaluate(this.shader_rule_y_neg_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_y_neg_y, scope);
-            scope.x3 = math.evaluate(this.shader_rule_y_neg_z, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_y_neg_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_y_neg_y, scope);
+            scope.x3_new = math.evaluate(this.shader_rule_y_neg_z, scope);            
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
+            scope.x3 = scope.x3_new;
         }
 
         if (x3 > 1) {
-            scope.x1 = math.evaluate(this.shader_rule_z_pos_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_z_pos_y, scope);
-            scope.x3 = math.evaluate(this.shader_rule_z_pos_z, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_z_pos_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_z_pos_y, scope);
+            scope.x3_new = math.evaluate(this.shader_rule_z_pos_z, scope);            
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
+            scope.x3 = scope.x3_new;
         }
         else if (x3 < 0) {
-            scope.x1 = math.evaluate(this.shader_rule_z_neg_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_z_neg_y, scope);
-            scope.x3 = math.evaluate(this.shader_rule_z_neg_z, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_z_neg_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_z_neg_y, scope);
+            scope.x3_new = math.evaluate(this.shader_rule_z_neg_z, scope);            
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
+            scope.x3 = scope.x3_new;
         }
 
         return glMatrix.vec3.fromValues(scope.x1, scope.x2, scope.x3);
@@ -2083,6 +2106,8 @@ class StreamlineGenerator {
         var v2 = direction[1];
         var v3 = direction[2];
 
+        //MARKER_RULES_TMP done
+
         let scope = {
             x1: x1,
             x2: x2,
@@ -2090,39 +2115,60 @@ class StreamlineGenerator {
             v1: v1,
             v2: v2,
             v3: v3,
+            v1_new: v1,
+            v2_new: v2,
+            v3_new: v3,
         };
 
         if (x1 > 1) {
-            scope.v1 = math.evaluate(this.shader_rule_x_pos_u, scope);
-            scope.v2 = math.evaluate(this.shader_rule_x_pos_v, scope);
-            scope.v3 = math.evaluate(this.shader_rule_x_pos_w, scope);
+            scope.v1_new = math.evaluate(this.shader_rule_x_pos_u, scope);
+            scope.v2_new = math.evaluate(this.shader_rule_x_pos_v, scope);
+            scope.v3_new = math.evaluate(this.shader_rule_x_pos_w, scope);       
+            scope.v1 = scope.v1_new;
+            scope.v2 = scope.v2_new;
+            scope.v3 = scope.v3_new;
         }
         else if (x1 < 0) {
-            scope.v1 = math.evaluate(this.shader_rule_x_neg_u, scope);
-            scope.v2 = math.evaluate(this.shader_rule_x_neg_v, scope);
-            scope.v3 = math.evaluate(this.shader_rule_x_neg_w, scope);
+            scope.v1_new = math.evaluate(this.shader_rule_x_neg_u, scope);
+            scope.v2_new = math.evaluate(this.shader_rule_x_neg_v, scope);
+            scope.v3_new = math.evaluate(this.shader_rule_x_neg_w, scope);       
+            scope.v1 = scope.v1_new;
+            scope.v2 = scope.v2_new;
+            scope.v3 = scope.v3_new;
         }
 
         if (x2 > 1) {
-            scope.v1 = math.evaluate(this.shader_rule_y_pos_u, scope);
-            scope.v2 = math.evaluate(this.shader_rule_y_pos_v, scope);
-            scope.v3 = math.evaluate(this.shader_rule_y_pos_w, scope);
+            scope.v1_new = math.evaluate(this.shader_rule_y_pos_u, scope);
+            scope.v2_new = math.evaluate(this.shader_rule_y_pos_v, scope);
+            scope.v3_new = math.evaluate(this.shader_rule_y_pos_w, scope);       
+            scope.v1 = scope.v1_new;
+            scope.v2 = scope.v2_new;
+            scope.v3 = scope.v3_new;
         }
         else if (x2 < 0) {
-            scope.v1 = math.evaluate(this.shader_rule_y_neg_u, scope);
-            scope.v2 = math.evaluate(this.shader_rule_y_neg_v, scope);
-            scope.v3 = math.evaluate(this.shader_rule_y_neg_w, scope);
+            scope.v1_new = math.evaluate(this.shader_rule_y_neg_u, scope);
+            scope.v2_new = math.evaluate(this.shader_rule_y_neg_v, scope);
+            scope.v3_new = math.evaluate(this.shader_rule_y_neg_w, scope);       
+            scope.v1 = scope.v1_new;
+            scope.v2 = scope.v2_new;
+            scope.v3 = scope.v3_new;
         }
 
         if (x3 > 1) {
-            scope.v1 = math.evaluate(this.shader_rule_z_pos_u, scope);
-            scope.v2 = math.evaluate(this.shader_rule_z_pos_v, scope);
-            scope.v3 = math.evaluate(this.shader_rule_z_pos_w, scope);
+            scope.v1_new = math.evaluate(this.shader_rule_z_pos_u, scope);
+            scope.v2_new = math.evaluate(this.shader_rule_z_pos_v, scope);
+            scope.v3_new = math.evaluate(this.shader_rule_z_pos_w, scope);       
+            scope.v1 = scope.v1_new;
+            scope.v2 = scope.v2_new;
+            scope.v3 = scope.v3_new;
         }
         else if (x3 < 0) {
-            scope.v1 = math.evaluate(this.shader_rule_z_neg_u, scope);
-            scope.v2 = math.evaluate(this.shader_rule_z_neg_v, scope);
-            scope.v3 = math.evaluate(this.shader_rule_z_neg_w, scope);
+            scope.v1_new = math.evaluate(this.shader_rule_z_neg_u, scope);
+            scope.v2_new = math.evaluate(this.shader_rule_z_neg_v, scope);
+            scope.v3_new = math.evaluate(this.shader_rule_z_neg_w, scope);       
+            scope.v1 = scope.v1_new;
+            scope.v2 = scope.v2_new;
+            scope.v3 = scope.v3_new;
         }
 
         return glMatrix.vec3.fromValues(scope.v1, scope.v2, scope.v3);
@@ -2142,36 +2188,48 @@ class StreamlineGenerator {
         //var v_x0 = v_x;
         //var v_y0 = v_y;
 
+        //MARKER_RULES_TMP done
+
         let scope = {
             x1: x1,
             x2: x2,
             v1: v1,
             v2: v2,
+            x1_new: x1,
+            x2_new: x2,
         };
 
         if (x1 > 1) {
             //console.log("shader_rule_x_pos_x: "+this.shader_rule_x_pos_x);
-            scope.x1 = math.evaluate(this.shader_rule_x_pos_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_x_pos_y, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_x_pos_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_x_pos_y, scope);          
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
             //scope.v_x = math.evaluate(this.shader_rule_x_pos_v_x, scope);
             //scope.v_y = math.evaluate(this.shader_rule_x_pos_v_y, scope);
         }
         else if (x1 < 0) {
-            scope.x1 = math.evaluate(this.shader_rule_x_neg_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_x_neg_y, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_x_neg_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_x_neg_y, scope);          
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
             //scope.v_x = math.evaluate(this.shader_rule_x_neg_v_x, scope);
             //scope.v_y = math.evaluate(this.shader_rule_x_neg_v_y, scope);
         }
 
         if (x2 > 1) {
-            scope.x1 = math.evaluate(this.shader_rule_y_pos_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_y_pos_y, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_y_pos_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_y_pos_y, scope);          
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
             //scope.v_x = math.evaluate(this.shader_rule_y_pos_v_x, scope);
             //scope.v_y = math.evaluate(this.shader_rule_y_pos_v_y, scope);
         }
         else if (x2 < 0) {
-            scope.x1 = math.evaluate(this.shader_rule_y_neg_x, scope);
-            scope.x2 = math.evaluate(this.shader_rule_y_neg_y, scope);
+            scope.x1_new = math.evaluate(this.shader_rule_y_neg_x, scope);
+            scope.x2_new = math.evaluate(this.shader_rule_y_neg_y, scope);          
+            scope.x1 = scope.x1_new;
+            scope.x2 = scope.x2_new;
             //scope.v_x = math.evaluate(this.shader_rule_y_neg_v_x, scope);
             //scope.v_y = math.evaluate(this.shader_rule_y_neg_v_y, scope);
         }
