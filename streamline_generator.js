@@ -783,13 +783,13 @@ class StreamlineGenerator {
             var dist = glMatrix.vec3.distance(c, b);
     
             //Apply boundary rule to (c, normalize(dir)) to get c_new and dir_new (because the rules are only valid at the border)
-            var dir_new = this.MoveOutOfBoundsDirection3(c, dir_normalized);
+            //var dir_new = this.MoveOutOfBoundsDirection3(c, dir_normalized);
             var c_new = this.MoveOutOfBounds3(c);
             //console.warn("   c_new", c_new);
             var attempts_left = 10;
             while(this.CheckOutOfBounds3(c_new)){
-                glMatrix.vec3.normalize(dir_new_normalized, dir_new);
-                dir_new = this.MoveOutOfBoundsDirection3(c_new, dir_new_normalized);
+                //glMatrix.vec3.normalize(dir_new_normalized, dir_new);
+                //dir_new = this.MoveOutOfBoundsDirection3(c_new, dir_new_normalized);
                 c_new = this.MoveOutOfBounds3(c_new);
                 //console.warn("   c_new", c_new);
                 if(attempts_left == 0){
@@ -800,8 +800,9 @@ class StreamlineGenerator {
 
             //Calculate new b
             //b = c_new + dist * normalize(dir_new);
-            glMatrix.vec3.normalize(dir_new_normalized, dir_new);
-            glMatrix.vec3.scaleAndAdd(b, c_new, dir_new_normalized, dist);
+            //glMatrix.vec3.normalize(dir_new_normalized, dir_new);
+            //glMatrix.vec3.scaleAndAdd(b, c_new, dir_new_normalized, dist);
+            glMatrix.vec3.scaleAndAdd(b, c_new, dir_normalized, dist);
         
             //Cleanup for next iteration:
             //a = c_new;
