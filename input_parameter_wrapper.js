@@ -472,6 +472,11 @@ class InputParameterWrapper {
         //    layout = layout_export;
         this.ui_tools.selectLayout(layout);
         //this.tab_manager.selectTab("tab_group_main", tab);
+
+        window["forceftle"] = 0;
+        if(urlParams.has("forceftle")){
+            window["forceftle"] = parseInt(urlParams.get("forceftle"));
+        }
     }
 
     toURL(layout_key, is_lazy){

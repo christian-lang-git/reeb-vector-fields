@@ -219,6 +219,8 @@ const { re } = require("mathjs");
     var christoffel;
     var metric;
 
+    var forceftle;//this is once set by InputParameterWrapper via window["forceftle"] from the "forceftle" url parameter and then set to 0 if it was 1
+
     function onStart(evt) {
         console.log("onStart");
         is_mobile = window.mobileAndTabletCheck();
@@ -441,6 +443,7 @@ const { re } = require("mathjs");
         input_parameter_wrapper.fromURLVersion();
         RedirectVersion();
         input_parameter_wrapper.fromURL();
+        forceftle = window["forceftle"];
         ManifoldOrDataOrderChanged();
         UpdateVersionString();
         onChangedDrawMode();
@@ -795,6 +798,11 @@ const { re } = require("mathjs");
         //retrieve sheduled task from export wizard
         if (sheduled_task == TASK_NONE){
             sheduled_task = export_wizard.getSheduledTask();
+            
+            if(forceftle == 1){
+                forceftle = 0;
+                sheduled_task = TASK_CALCULATE_FTLE;
+            }                 
             
             if (sheduled_task != TASK_NONE){                
                 console.log("sheduled_task:", sheduled_task);
