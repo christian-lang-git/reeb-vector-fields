@@ -123,6 +123,7 @@ const PixelResults = require("./pixel_results");
 const gram_schmidt = require("./gram_schmidt");
 const VERSION_REDIRECTION_DICT = require("./version_redirection_dict").VERSION_REDIRECTION_DICT;
 const ExampleManager = require("./example_manager");
+const ErrorManager = require("./error");
 const Christoffel = require("./christoffel");
 const Metric = require("./metric");
 
@@ -164,6 +165,7 @@ const { re } = require("mathjs");
     var input_changed_manager;
     var hide_manager;
     var example_manager;
+    var error_manager;
     var visibility_manager;
     var lights;
     var streamline_context_static;//the static streamlines
@@ -223,6 +225,7 @@ const { re } = require("mathjs");
 
     function onStart(evt) {
         console.log("onStart");
+        error_manager = new ErrorManager();
         is_mobile = window.mobileAndTabletCheck();
         console.warn("MOBILE: "+is_mobile)
 
@@ -317,12 +320,13 @@ const { re } = require("mathjs");
 
         //buildErrorDictionary();
 
-        if (!(gl = getRenderingContext(main_canvas)))
+        if (!(gl = getRenderingContext(main_canvas, error_manager)))
             return;
-        if (!(gl_side = getRenderingContext(side_canvas)))
+        if (!(gl_side = getRenderingContext(side_canvas, error_manager)))
             return;
-        if (!(gl_transfer_function = getRenderingContextTransferFunction(transfer_function_canvas)))
+        if (!(gl_transfer_function = getRenderingContextTransferFunction(transfer_function_canvas, error_manager)))
             return;
+        
         console.log(gl);
         console.log(gl_side);
         console.log(gl_transfer_function);
@@ -420,6 +424,7 @@ const { re } = require("mathjs");
 
         canvas_wrapper_main = new CanvasWrapper(gl, streamline_context_static, streamline_context_dynamic, ftle_manager, CANVAS_WRAPPER_MAIN,
             main_canvas, CANVAS_MAIN_WIDTH, CANVAS_MAIN_HEIGHT, main_thumbnail, main_camera, aliasing, shader_manager, global_data, tree_view, pixel_results);
+        console.warn("canvas_wrapper_main", canvas_wrapper_main);
         canvas_wrapper_side = new CanvasWrapper(gl_side, streamline_context_static, streamline_context_dynamic, ftle_manager, CANVAS_WRAPPER_SIDE,
             side_canvas, CANVAS_SIDE_WIDTH, CANVAS_SIDE_HEIGHT, aux_thumbnail, side_camera, aliasing, shader_manager, global_data, tree_view, pixel_results);
         canvas_wrapper_transfer_function = new CanvasWrapperTransferFunction(gl_transfer_function, CANVAS_WRAPPER_TRANSFER_FUNCTION, 

@@ -1,4 +1,4 @@
-exports.getRenderingContext = function(canvas) {
+exports.getRenderingContext = function(canvas, error_manager) {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     //set the canvas buffer to 1920x1080, smaller sizes are handled automatically
@@ -8,7 +8,7 @@ exports.getRenderingContext = function(canvas) {
     var gl = canvas.getContext("webgl2", {preserveDrawingBuffer: true})
         || canvas.getContext("experimental-webgl");
     if (!gl) {
-        //displayError(ERROR_ID_GET_WEB_GL_CONTEXT);
+        error_manager.displayError(ERROR_ID_GET_WEB_GL_CONTEXT);
         return null;
     }
     gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
@@ -18,7 +18,7 @@ exports.getRenderingContext = function(canvas) {
     return gl;
 }
 
-exports.getRenderingContextTransferFunction = function(canvas) {
+exports.getRenderingContextTransferFunction = function(canvas, error_manager) {
     //set the canvas buffer to the fixed size: 512x256
     canvas.width = 512;
     canvas.height = 256;
@@ -26,7 +26,7 @@ exports.getRenderingContextTransferFunction = function(canvas) {
     var gl = canvas.getContext("webgl2", {preserveDrawingBuffer: true})
         || canvas.getContext("experimental-webgl");
     if (!gl) {
-        //displayError(ERROR_ID_GET_WEB_GL_CONTEXT);
+        error_manager.displayError(ERROR_ID_GET_WEB_GL_CONTEXT);
         return null;
     }
     gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
