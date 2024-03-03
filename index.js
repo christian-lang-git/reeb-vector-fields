@@ -300,6 +300,7 @@ const { re } = require("mathjs");
 
         export_wizard = new ExportWizard();
 
+        addContextLostListener();
         addBlockContextMenu();
         addBlockScroll();
 
@@ -1361,6 +1362,15 @@ const { re } = require("mathjs");
         document.getElementById("select_transfer_function_id").addEventListener("change", (event) => {
             OnSelectedTransferFunction();
         });
+    }
+
+    function addContextLostListener(){
+        main_canvas.addEventListener('webglcontextlost', ( e ) => {
+            error_manager.displayError(ERROR_ID_WEB_GL_CONTEXT_LOST);
+          });
+        side_canvas.addEventListener('webglcontextlost', ( e ) => {
+            error_manager.displayError(ERROR_ID_WEB_GL_CONTEXT_LOST);
+          });
     }
 
     function addBlockContextMenu(){
